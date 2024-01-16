@@ -4,12 +4,11 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import streamlit as st
 
-# Load the dataset with 'Date' as the index
-url = 'https://raw.githubusercontent.com/CLINTONPAU/streamlit-predictions/main/sales.csv'
-df = pd.read_csv(url, parse_dates=['Date'], index_col='Date')
+# Rest of your code remains unchanged...
 
-# Drop unnecessary columns
-df.drop(columns='Unnamed: 0', axis=1, inplace=True)
+# Load the dataset
+url = 'https://raw.githubusercontent.com/CLINTONPAU/streamlit-predictions/main/sales.csv'
+df = pd.read_csv(url)
 
 # Function to engineer features
 def engineered_features(df):
@@ -62,16 +61,11 @@ st.sidebar.header("Model Input")
 
 # Collect user input features
 user_input = {}
-user_input['day'] = st.sidebar.slider("Select Day", float(X_test['day'].min()), float(X_test['day'].max()))
-for feature in ['day_of_week', 'month', 'quarter', 'year']:
+for feature in X_test.columns:
     user_input[feature] = st.sidebar.slider(f"Select {feature}", float(X_test[feature].min()), float(X_test[feature].max()))
 
 # Feature engineering for user input
 user_input_df = pd.DataFrame([user_input])
-
-# Set the index of user_input_df to match the original dataset's index structure
-user_input_df.index = X_test.index
-
 user_input_engineered = engineered_features(user_input_df)
 
 # Make predictions on user input
