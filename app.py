@@ -62,11 +62,16 @@ st.sidebar.header("Model Input")
 
 # Collect user input features
 user_input = {}
-for feature in X_test.columns:
+user_input['day'] = st.sidebar.slider("Select Day", float(X_test['day'].min()), float(X_test['day'].max()))
+for feature in ['day_of_week', 'month', 'quarter', 'year']:
     user_input[feature] = st.sidebar.slider(f"Select {feature}", float(X_test[feature].min()), float(X_test[feature].max()))
 
 # Feature engineering for user input
 user_input_df = pd.DataFrame([user_input])
+
+# Set the index of user_input_df to match the original dataset's index structure
+user_input_df.index = X_test.index
+
 user_input_engineered = engineered_features(user_input_df)
 
 # Make predictions on user input
