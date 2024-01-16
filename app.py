@@ -1,12 +1,15 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-import streamlit as st
+from scikit_learn.model_selection import train_test_split, GridSearchCV
+from scikit_learn.ensemble import RandomForestRegressor
+from scikit_learn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+# Rest of your code remains unchanged...
+
 
 # Load the dataset
-df = pd.read_csv('/content/drive/MyDrive/Colab Notebooks/sales.csv')
+url = 'https://raw.githubusercontent.com/CLINTONPAU/streamlit-predictions/main/sales.csv'
 
+df = pd.read_csv(url)
 # Function to engineer features
 def engineered_features(df):
     # Make a copy to avoid tampering with the original dataset
