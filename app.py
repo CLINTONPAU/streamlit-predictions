@@ -11,6 +11,11 @@ url = 'https://raw.githubusercontent.com/CLINTONPAU/streamlit-predictions/main/s
 
 df = pd.read_csv(url)
 # Function to engineer features
+df.drop(columns='Unnamed: 0',axis=1,inplace=True)
+# Convert 'Date' to datetime for time-based analysis
+df['Date'] = pd.to_datetime(df['Date'])
+# Set 'Date' column  as the DataFrame index 
+df.set_index('Date',inplace=True)
 def engineered_features(df):
     # Make a copy to avoid tampering with the original dataset
     df = df.copy()
