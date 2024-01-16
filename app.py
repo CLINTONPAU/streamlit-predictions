@@ -10,7 +10,7 @@ import streamlit as st
 # Load the dataset
 url = 'https://raw.githubusercontent.com/CLINTONPAU/streamlit-predictions/main/sales.csv'
 
-df = pd.read_csv(url)
+df = pd.read_csv(url, parse_dates=['Date'], index_col='Date')
 # Function to engineer features
 df.drop(columns='Unnamed: 0',axis=1,inplace=True)
 # Convert 'Date' to datetime for time-based analysis
