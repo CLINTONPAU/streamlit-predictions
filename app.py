@@ -4,16 +4,20 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import streamlit as st
 
-# Rest of your code remains unchanged...
+df.index = pd.to_datetime(df.index)
 
 # Load the dataset
 url = 'https://raw.githubusercontent.com/CLINTONPAU/streamlit-predictions/main/sales.csv'
-df = pd.read_csv(url)
-df.index = pd.to_datetime(df.index)
+df = pd.read_csv(url, parse_dates=['Date'], index_col='Date')
+
 # Function to engineer features
 def engineered_features(df):
     # Make a copy to avoid tampering with the original dataset
     df = df.copy()
+    
+    # Ensure datetime index
+    if not isinstance(df.index, pd.DatetimeIndex):
+        df.index = pd.to_datetime(df.index)
     
     # Feature engineering through extraction from the dataset copy
     df['day'] = df.index.day  
@@ -24,8 +28,9 @@ def engineered_features(df):
     
     return df
 
-# Execute feature engineering on the dataset
+# Execute feature engineering on the main dataset
 df = engineered_features(df)
+
 
 # Define features and target variables
 features = ['day', 'day_of_week', 'quarter', 'year']
