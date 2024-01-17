@@ -9,13 +9,11 @@ import streamlit as st
 # Load the dataset
 url = 'https://raw.githubusercontent.com/CLINTONPAU/streamlit-predictions/main/sales.csv'
 df = pd.read_csv(url, parse_dates=['Date'], index_col='Date')
-df.index = pd.to_datetime(df.index)
-# Function to engineer features
 def engineered_features(df):
     # Make a copy to avoid tampering with the original dataset
     df = df.copy()
     
-    # Ensure datetime index
+    # Convert the index to datetime
     if not isinstance(df.index, pd.DatetimeIndex):
         df.index = pd.to_datetime(df.index)
     
@@ -27,13 +25,12 @@ def engineered_features(df):
     df['year'] = df.index.year  
     
     return df
-
 # Execute feature engineering on the main dataset
 df = engineered_features(df)
 
 
 # Define features and target variables
-features = ['day', 'day_of_week', 'quarter', 'year']
+features = ['day', 'day_of_week', 'month', 'quarter', 'year']
 target = ['Sales']
 
 # Split data into features and targets for training and testing
@@ -66,8 +63,11 @@ st.sidebar.header("Model Input")
 
 # Collect user input features
 user_input = {}
-for feature in X_test.columns:
-    user_input[feature] = st.sidebar.slider(f"Select {feature}", float(X_test[feature].min()), float(X_test[feature].max()))
+user_input['day'] = st.sidebar.slider("Select day", float(X_test['day'].min()), float(X_test['day'].max()))
+user_input['day_of_week'] = st.sidebar.slider("Select day_of_week", float(X_test['day_of_week'].min()), float(X_test['day_of_week'].max()))
+user_input['month'] = st.sidebar.slider("Select month", float(X_test['month'].min()), float(X_test['month'].max()))
+user_input['quarter'] = st.sidebar.slider("Select quarter", float(X_test['quarter'].min()), float(X_test['quarter'].max()))
+user_input['year'] = st.sidebar.slider("Select year", float(X_test['year'].min()), float(X_test['year'].max()))
 
 # Feature engineering for user input
 user_input_df = pd.DataFrame([user_input])
