@@ -8,7 +8,8 @@ import streamlit as st
 
 # Load the dataset
 url = 'https://raw.githubusercontent.com/CLINTONPAU/streamlit-predictions/main/sales.csv'
-df = pd.read_csv(url, parse_dates=['Date'], index_col='Date')
+df = pd.read_csv(url)
+df.index = pd.to_datetime(df.index)
 # Function to engineer features
 def engineered_features(df):
     # Make a copy to avoid tampering with the original dataset
